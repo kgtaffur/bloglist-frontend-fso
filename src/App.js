@@ -90,6 +90,23 @@ const App = () => {
     }
   }
 
+  const addBlog = async (newObject) => {
+    try {
+      const newBlog = await blogService.create(newObject);
+      setBlogs(blogs.concat(newBlog));
+      setMessage(`A new blog "${newBlog.title} by ${newBlog.author} added`);
+      setMessageType('success');
+    } catch (exception) {
+      setMessage('Error adding new blog');
+      setMessageType('error');
+    } finally {
+      setTimeout(() => {
+        setMessage(null);
+        setMessageType(null);
+      }, 5000);
+    }
+  }
+
   return (
     <div>
       {user ? (
@@ -109,13 +126,7 @@ const App = () => {
           <br />
           <Togglable buttonLabel="New blog">
             <NewBlogForm
-              handleNewBlog={handleNewBlog}
-              blogTitle={blogTitle}
-              blogAuthor={blogAuthor}
-              blogUrl={blogUrl}
-              setBlogAuthor={setBlogAuthor}
-              setBlogTitle={setBlogTitle}
-              setBlogUrl={setBlogUrl}
+              createBlog={addBlog}
             />
           </Togglable>
           <br />
