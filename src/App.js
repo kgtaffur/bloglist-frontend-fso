@@ -103,6 +103,25 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (id, title, author) => {
+    if (window.confirm(`Remove blog "${title}" by ${author}`)) {
+      try {
+        await blogService.remove(id);
+        setBlogs(blogs.filter((blog) => blog.id !== id));
+        setMessage(`Blog "${title}" by ${author} deleted`);
+        setMessageType('success');
+      } catch (exception) {
+        setMessage('Error deleting blog');
+        setMessageType('error');
+      } finally {
+        setTimeout(() => {
+          setMessage(null);
+          setMessageType(null);
+        }, 5000);
+      }
+    }
+  };
+
   const sortByLikes = (blog1, blog2) => {
     if (blog1.likes < blog2.likes) {
       return -1;
@@ -142,6 +161,8 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 updateBlog={updateBlog}
+                deleteBlog={deleteBlog}
+                owner={user.username}
               />
             )}
           </div>
