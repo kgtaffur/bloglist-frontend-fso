@@ -14,9 +14,6 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(null);
   const [messageType, setMessageType] = useState(null);
-  const [blogTitle, setBlogTitle] = useState('');
-  const [blogAuthor, setBlogAuthor] = useState('');
-  const [blogUrl, setBlogUrl] = useState('');
 
   useEffect(() => {
     if (user !== null) {
@@ -68,14 +65,9 @@ const App = () => {
     }, 5000);
   }
 
-  const handleNewBlog = async (event) => {
-    event.preventDefault();
+  const addBlog = async (newObject) => {
     try {
-      const newBlog = await blogService.create({
-        title: blogTitle,
-        author: blogAuthor,
-        url: blogUrl,
-      });
+      const newBlog = await blogService.create(newObject);
       setBlogs(blogs.concat(newBlog));
       setMessage(`A new blog "${newBlog.title} by ${newBlog.author} added`);
       setMessageType('success');
@@ -90,14 +82,18 @@ const App = () => {
     }
   }
 
-  const addBlog = async (newObject) => {
+  const updateBlog = async (updatedObject, id) => {
     try {
-      const newBlog = await blogService.create(newObject);
-      setBlogs(blogs.concat(newBlog));
-      setMessage(`A new blog "${newBlog.title} by ${newBlog.author} added`);
-      setMessageType('success');
+      const updatedBlog = await blogService.update(updatedObject, id);
+      const updatedBlogs = blogs.map((blog) => {
+        if (updatedBlog.id === blog.id) {
+          return { ...blog, likes: blog.likes + 1 };
+        }
+        return blog;
+      });
+      setBlogs(updatedBlogs);
     } catch (exception) {
-      setMessage('Error adding new blog');
+      setMessage('Error updating blog');
       setMessageType('error');
     } finally {
       setTimeout(() => {
@@ -132,7 +128,11 @@ const App = () => {
           <br />
           <div>
             {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                updateBlog={updateBlog}
+              />
             )}
           </div>
         </>
