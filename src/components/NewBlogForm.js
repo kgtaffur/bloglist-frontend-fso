@@ -1,5 +1,5 @@
 const NewBlogForm = ({ handleNewBlog, blogTitle, blogAuthor, blogUrl, setBlogAuthor, setBlogTitle, setBlogUrl }) => (
-  <>
+  <div>
     <h2>Create new</h2>
     <form onSubmit={handleNewBlog}>
       <div>
@@ -28,7 +28,7 @@ const NewBlogForm = ({ handleNewBlog, blogTitle, blogAuthor, blogUrl, setBlogAut
       </div>
       <button type="submit">create</button>
     </form>
-  </>
+  </div>
 );
 
 export default NewBlogForm;
