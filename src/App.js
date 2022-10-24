@@ -63,7 +63,7 @@ const App = () => {
       setMessage(null);
       setMessageType(null);
     }, 5000);
-  }
+  };
 
   const addBlog = async (newObject) => {
     try {
@@ -80,7 +80,7 @@ const App = () => {
         setMessageType(null);
       }, 5000);
     }
-  }
+  };
 
   const updateBlog = async (updatedObject, id) => {
     try {
@@ -101,7 +101,7 @@ const App = () => {
         setMessageType(null);
       }, 5000);
     }
-  }
+  };
 
   const deleteBlog = async (id, title, author) => {
     if (window.confirm(`Remove blog "${title}" by ${author}`)) {

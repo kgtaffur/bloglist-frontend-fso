@@ -1,5 +1,5 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
+import axios from 'axios';
+const baseUrl = '/api/blogs';
 
 let token = null;
 
@@ -28,6 +28,6 @@ const update = async (updatedObject, id) => {
 
 const remove = async (id) => {
   return await axios.delete(`${baseUrl}/${id}`, getConfig());
-}
+};
 
 export default { getAll, create, update, remove, setToken };

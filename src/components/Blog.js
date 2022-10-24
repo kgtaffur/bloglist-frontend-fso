@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const Blog = ({ blog, updateBlog, deleteBlog, owner }) => {
   const [visible, setVisible] = useState(false);
@@ -15,11 +15,11 @@ const Blog = ({ blog, updateBlog, deleteBlog, owner }) => {
 
   const addedByUser = () => {
     return blog.user.username === owner;
-  }
+  };
 
   const removeBlog = () => {
     deleteBlog(blog.id, blog.title, blog.author);
-  }
+  };
 
   if (visible) {
     return (
@@ -42,7 +42,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, owner }) => {
           </div>
         )}
       </div>
-    )
+    );
   }
 
   return (
