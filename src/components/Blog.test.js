@@ -43,9 +43,7 @@ test('url and likes are shown when view button has been clicked', async () => {
     user: 'Test user',
   };
 
-  const mockHandler = jest.fn();
-
-  const { container } = render(<Blog blog={blog} updateBlog={mockHandler} />);
+  const { container } = render(<Blog blog={blog} />);
 
   const button = screen.getByText('view');
   await userEvent.click(button);
@@ -54,4 +52,27 @@ test('url and likes are shown when view button has been clicked', async () => {
   expect(div).toHaveTextContent(
     'This is a test title hideThis is a test urllikes 0 likeThis is a test authorremove'
   );
+});
+
+test('like button clicked twice the event handler is called twice', async () => {
+  const blog = {
+    title: 'This is a test title',
+    author: 'This is a test author',
+    url: 'This is a test url',
+    likes: 0,
+    user: 'Test user',
+  };
+
+  const mockHandler = jest.fn();
+
+  render(<Blog blog={blog} handleLike={mockHandler} />);
+
+  const viewButton = screen.getByText('view');
+  await userEvent.click(viewButton);
+
+  const likeButton = screen.getByText('like');
+  await userEvent.click(likeButton);
+  await userEvent.click(likeButton);
+
+  expect(mockHandler.mock.calls).toHaveLength(2);
 });

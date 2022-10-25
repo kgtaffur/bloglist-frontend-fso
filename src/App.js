@@ -82,16 +82,16 @@ const App = () => {
     }
   };
 
-  const updateBlog = async (updatedObject, id) => {
+  const handleLike = async (id) => {
+    const blog = blogs.find((blog) => blog.id === id);
+    const changedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    };
+
     try {
-      const updatedBlog = await blogService.update(updatedObject, id);
-      const updatedBlogs = blogs.map((blog) => {
-        if (updatedBlog.id === blog.id) {
-          return { ...blog, likes: blog.likes + 1 };
-        }
-        return blog;
-      });
-      setBlogs(updatedBlogs);
+      const updatedBlog = await blogService.update(changedBlog, id);
+      setBlogs(blogs.map((blog) => blog.id !== id ? blog : updatedBlog));
     } catch (exception) {
       setMessage('Error updating blog');
       setMessageType('error');
@@ -160,7 +160,7 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                updateBlog={updateBlog}
+                handleLike={handleLike}
                 deleteBlog={deleteBlog}
                 owner={user.username}
               />
