@@ -69,7 +69,7 @@ const App = () => {
     try {
       const newBlog = await blogService.create(newObject);
       setBlogs(blogs.concat(newBlog));
-      setMessage(`A new blog "${newBlog.title} by ${newBlog.author} added`);
+      setMessage(`A new blog "${newBlog.title}" by ${newBlog.author} added`);
       setMessageType('success');
     } catch (exception) {
       setMessage('Error adding new blog');
