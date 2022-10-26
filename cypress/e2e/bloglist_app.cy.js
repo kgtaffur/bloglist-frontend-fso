@@ -48,5 +48,19 @@ describe('Bloglist app', function () {
       cy.get('.success').should('have.css', 'color', 'rgb(0, 128, 0)');
       cy.contains('Title about Cypress');
     });
+
+    it('Users can like a blog', function () {
+      cy.createBlog({
+        title: 'Title about Cypress',
+        author: 'Cypress',
+        url: 'https://www.cypress.io/',
+      });
+      cy.contains('view').click();
+      cy.contains('likes 0');
+      cy.contains('like').click();
+      setTimeout(() => {
+        cy.contains('like 1');
+      }, 1000);
+    });
   });
 });
