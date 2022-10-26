@@ -57,10 +57,42 @@ describe('Bloglist app', function () {
       });
       cy.contains('view').click();
       cy.contains('likes 0');
-      cy.contains('like').click();
-      setTimeout(() => {
-        cy.contains('like 1');
-      }, 1000);
+      cy.contains('like').click()
+        .then(() => {
+          cy.contains('likes 1');
+        });
+    });
+
+    it('User who create a blog can delete it', function () {
+      cy.createBlog({
+        title: 'Title about Cypress',
+        author: 'Cypress',
+        url: 'https://www.cypress.io/',
+      });
+      cy.contains('view').click();
+      cy.contains('remove').click();
+      cy.get('.success').should('have.css', 'color', 'rgb(0, 128, 0)');
+      cy.get('.blog').should('not.exist');
+    });
+
+    it('Other users cannot delete the blog', function () {
+      const user = {
+        username: 'testingfromcypress2',
+        password: 'supersecurepassword2',
+        name: 'Test Cypress 2',
+      };
+      cy.request('POST', 'http://localhost:3003/api/users', user);
+
+      cy.createBlog({
+        title: 'Title about Cypress',
+        author: 'Cypress',
+        url: 'https://www.cypress.io/',
+      });
+
+      cy.contains('logout').click();
+      cy.login({ username: 'testingfromcypress2', password: 'supersecurepassword2' });
+      cy.contains('view').click();
+      cy.contains('remove').should('not.exist');
     });
   });
 });
