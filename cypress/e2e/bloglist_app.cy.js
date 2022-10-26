@@ -94,5 +94,36 @@ describe('Bloglist app', function () {
       cy.contains('view').click();
       cy.contains('remove').should('not.exist');
     });
+
+    it('Blogs are ordered according to likes (most likes being first)', function () {
+      cy.createBlog({
+        title: 'Most likes at the end',
+        author: 'some author',
+        url: 'example.com',
+      });
+      cy.createBlog({
+        title: 'Most likes at the beginning',
+        author: 'some author 2',
+        url: 'example.com',
+        likes: 2,
+      });
+      cy.get('.blog').eq(0).should('contain', 'Most likes at the beginning');
+      cy.get('.blog').eq(1).should('contain', 'Most likes at the end');
+
+      cy.get('.showData')
+        .then((buttons) => {
+          cy.wrap(buttons[1]).click();
+        });
+
+      cy.get('.like-button').click();
+      cy.wait(500);
+      cy.get('.like-button').click();
+      cy.wait(500);
+      cy.get('.like-button').click();
+      cy.wait(500);
+
+      cy.get('.blog').eq(0).should('contain', 'Most likes at the end');
+      cy.get('.blog').eq(1).should('contain', 'Most likes at the beginning');
+    });
   });
 });

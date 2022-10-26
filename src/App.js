@@ -123,10 +123,10 @@ const App = () => {
   };
 
   const sortByLikes = (blog1, blog2) => {
-    if (blog1.likes < blog2.likes) {
+    if (blog1.likes > blog2.likes) {
       return -1;
     }
-    if (blog1.likes > blog2.likes) {
+    if (blog1.likes < blog2.likes) {
       return 1;
     }
     return 0;
@@ -155,7 +155,7 @@ const App = () => {
             />
           </Togglable>
           <br />
-          <div>
+          <div className="blogs">
             {blogs.sort(sortByLikes).map(blog =>
               <Blog
                 key={blog.id}
